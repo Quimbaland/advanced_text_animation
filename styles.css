@@ -24,22 +24,80 @@ body {
 }
 
 .list-item {
-    display: flex;
-    flex-direction: column;
+    position: relative;
     font-weight: bold;
     font-size: 1.5rem;
-    text-align: center;
+    margin: 0 auto;
+    width: max-content;
 }
 
-.list-item:hover {
-    height: calc(var(--line-height) * 0.5em);
+.list-item > .split-text {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    transition: color 0ms 200ms;
+}
+
+.list-item:hover > .split-text {
+    color: transparent;
+    user-select: none;
+    transition-delay: 0ms;
+}
+
+.list-item > .split-text::before,
+.list-item > .split-text::after {
+    position: absolute;
+    content: attr(data-text);
+    height: calc(.5em);
     overflow: hidden;
+    left: 0;
+    right: 0;
+    color: var(--text-color);
+    transition: color 200ms ease-in-out, transform 200ms ease-in-out;
+    user-select: none;
+}
+
+.list-item:hover > .split-text::before,
+.list-item:hover > .split-text::after {
+    color: white;
+    transform: skewX(15deg);
+}
+
+.list-item > .split-text::after {
+    bottom: 0;
+    display: flex;
+    align-items: flex-end;
+}
+
+.list-item::before {
+    content: "";
+    position: absolute;
+    width: 110%;
+    left: -5%;
+    top: calc(50% - 1px);
+    height: 2px;
+    transform: scale(0);
+    background-color: var(--text-color);
+    border-radius: 20px;
+    z-index: 1;
+    transition: transform 200ms ease-in-out;
 }
 
 .list-item:hover::before {
-    /* content: attr(data-text); */
-    position: absolute;
-    height: calc(var(--line-height) * 0.5em);
-    width: 100%;
-    overflow: hidden;
+    transform: scale(1);
 }
+
+@keyframes skew {
+    100% {
+        transform: skewX(15deg);
+        color: white;
+    }
+}
+
+@keyframes scale {
+    100% {
+        transform: scale(1);
+    }
+}
+
